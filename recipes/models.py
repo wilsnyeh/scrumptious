@@ -1,18 +1,17 @@
-from pyexpat import model
 from django.db import models
 
 
 # Create your models here.
-class Receipe(models.Model):
+class Recipe(models.Model):
     name = models.CharField(max_length=125)
     author = models.CharField(max_length=100)
     description = models.TextField()
     image = models.URLField(null=True, blank=True)
-    created = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name + " created by " + self.author
+        return self.name + " by " + self.author
 
 
 class Measure(models.Model):
@@ -20,34 +19,39 @@ class Measure(models.Model):
     abbreviation = models.CharField(max_length=10, unique=True)
 
     def __str__(self):
-        return self.name + " (" + self.abbreviation + ")"
+        return self.name
 
 
 class FoodItem(models.Model):
-    name = models.CharField(max_length=30, unique=True)
+    name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
-        pass
+        return self.name
 
 
-class Ingredients(models.Model):
+class Ingredient(models.Model):
     amount = models.FloatField()
-    receipe = models.ForeignKey(
-        Receipe, related_name="ingredients", on_delete=models.CASCADE
+    recipe = models.ForeignKey(
+        "Recipe",
+        related_name="ingredients",
+        on_delete=models.CASCADE,
     )
-    measure = models.ForeignKey(Measure, on_delete=models.PROTECT)
-    food = models.ForeignKey(FoodItem, on_delete=models.PROTECT)
+    measure = models.ForeignKey("Measure", on_delete=models.PROTECT)
+    food = models.ForeignKey("FoodItem", on_delete=models.PROTECT)
 
     def __str__(self):
-        pass
+        return str(self.amount) + " " + str(self.measure) + " " + str(self.food)
 
 
 class Step(models.Model):
-    receipe = models.ForeignKey(
-        Receipe, related_name="steps", on_delete=models.CASCADE
+    recipe = models.ForeignKey(
+        "Recipe",
+        related_name="steps",
+        on_delete=models.CASCADE,
     )
-    order = models.SmallIntegerField()
+    order = models.PositiveSmallIntegerField()
     directions = models.CharField(max_length=300)
+    food_items = models.ManyToManyField("FoodItem", null=True, blank=True)
 
     def __str__(self):
-        pass
+        return str(self.order) + ". " + self.directions
