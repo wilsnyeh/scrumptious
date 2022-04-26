@@ -3,8 +3,10 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
-
-from tags.models import Tag
+try:
+    from tags.models import Tag
+except Exception:
+    Tag = None
 
 
 # Create your views here.
