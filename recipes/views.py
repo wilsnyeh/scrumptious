@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic import ListView
 
 from recipes.forms import RatingForm
 
@@ -76,6 +77,7 @@ def log_rating(request, recipe_id):
 class RecipeListView(ListView):
     model = Recipe
     template_name = "recipes/list.html"
+    paginate_by = 2
 
 
 class RecipeDetailView(DetailView):
