@@ -1,14 +1,13 @@
-{% extends 'base.html' %}
-{% comment %} {% load static %} {% endcomment %}
+{% load static %}
 
-{% comment %} <!DOCTYPE html>
-<html lang="en"> {% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% comment %} <head>
+<head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edit {{ recipe.name }} - Scrumptious</title>
+  <title>New Recipe - Scrumptious</title>
   <link rel="stylesheet" href="{% static 'css/app.css' %}">
 </head>
 
@@ -22,26 +21,27 @@
         <li>
           <a href="{% url 'tags_list' %}">Tags</a>
         </li>
+        {% if user.is_staff %}
         <li>
           <a href="{% url 'admin:index' %}">Admin</a>
         </li>
+        {% endif %}
         <li>
           <a href="{% url 'recipe_new' %}">Write a recipe</a>
         </li>
+          {% if user.is_authenticated %}
+        <li>
+          <a href="{% url 'logout' %}">Logout</a>
+        </li>
+          {% endif %}
       </ul>
     </nav>
-  </header> {% endcomment %}
+    {% block pagination %}
+    {% endblock pagination %}
+  </header>
   {% block content %}
-  <main class="recipe-form">
-    <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <div class="control">
-        <button class="button">Update</button>
-      </div>
-    </form>
-  </main>
-{% comment %} </body> {% endcomment %}
-{% endblock content %}
+  {% endblock content %}
 
-{% comment %} </html> {% endcomment %}
+</body>
+
+</html>

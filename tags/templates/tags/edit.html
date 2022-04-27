@@ -1,4 +1,5 @@
-{% load static %}
+{% extends 'base.html' %}
+{% comment %} {% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -29,7 +30,8 @@
         </li>
       </ul>
     </nav>
-  </header>
+  </header> {% endcomment %}
+  {% block content%}
   <main class="recipe-form">
     <form method="post">
       {% csrf_token %}
@@ -39,6 +41,7 @@
       </div>
     </form>
   </main>
-</body>
+  {% endblock content%}
+{% comment %} </body>
 
-</html>
+</html> {% endcomment %}
