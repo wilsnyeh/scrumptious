@@ -31,12 +31,12 @@
       </ul>
     </nav>
   </header>
-  <main class="recipe-form">
+  <main class="shopping-form">
     <form method="post">
       {% csrf_token %}
       {{ form.as_p }}
       <div class="control">
-        <button class="button">Create</button>
+        <button class="button">Create a shopping list</button>
       </div>
     </form>
   </main>

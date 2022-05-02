@@ -1,40 +1,7 @@
 {% extends 'base.html' %}
 {% load markdownify %}
-{% load resizer %}
-{% comment %} {% load static %}
 
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>New Recipe - Scrumptious</title>
-  <link rel="stylesheet" href="{% static 'css/app.css' %}">
-</head>
-
-<body>
-  <header>
-    <nav>
-      <ul>
-        <li>
-          <a href="{% url 'home' %}">Scrumptious</a>
-        </li>
-        <li>
-          <a href="{% url 'tags_list' %}">Tags</a>
-        </li>
-        <li>
-          <a href="{% url 'admin:index' %}">Admin</a>
-        </li>
-        <li>
-          <a href="{% url 'recipe_new' %}">Write a recipe</a>
-        </li>
-      </ul>
-    </nav>
-  </header> {% endcomment %}
-  {% block content %}
+{% block content %}
   <main class="recipe-detail">
     <div>
       <a href="{% url 'recipe_edit' recipe.id %}">Edit</a>
@@ -49,13 +16,6 @@
       Created on {{ recipe.created }} |
       Updated on {{ recipe.updated }}
     </p>
-    {% if recipe.servings%}
-    <p> Serves {{servings | default_if_none:recipe.servings}} </p>
-    <form method='GET'>
-      <input required type='number' name='servings'>
-      <button class="button">Resize</button>
-    </form>
-    {% endif %}
     <form method="post" action="{% url 'recipe_rating' recipe.id %}">
       {% csrf_token %}
       <div class="rating-form-grid">
@@ -76,8 +36,7 @@
       <tbody>
         {% for ingredient in recipe.ingredients.all %}
           <tr>
-
-            <td>{{ ingredient|resize_to:servings }}</td>
+            <td>{{ ingredient.amount }}</td>
             <td>{{ ingredient.measure.name }}</td>
             <td>{{ ingredient.food.name }}</td>
           </tr>
@@ -92,6 +51,3 @@
     </ol>
   </main>
   {% endblock content %}
-{% comment %} </body>
-
-</html> {% endcomment %}
